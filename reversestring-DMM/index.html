@@ -3,90 +3,437 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reverse String</title>
+    <title>Invertir cadena</title>
+
     <style>
+      :root {
+        color-scheme: light;
+        --bg-1: #f6f7fb;
+        --bg-2: #eef2ff;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: #e2e8f0;
+        --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+
+        --primary: #2563eb;
+        --primary-pressed: #1d4ed8;
+        --primary-contrast: #ffffff;
+
+        --secondary: #0f172a0d;
+        --secondary-pressed: #0f172a14;
+
+        --danger: #dc2626;
+        --success: #16a34a;
+
+        --radius: 16px;
+        --radius-sm: 12px;
+
+        --focus: 0 0 0 3px rgba(37, 99, 235, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        margin: 24px;
-        line-height: 1.4;
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--text);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: radial-gradient(
+            1200px 600px at 20% 10%,
+            var(--bg-2),
+            transparent 60%
+          ),
+          radial-gradient(1000px 500px at 80% 20%, #f0fdf4, transparent 55%),
+          linear-gradient(180deg, var(--bg-1), #ffffff);
       }
-      main {
-        max-width: 720px;
+
+      .wrap {
+        width: 100%;
+        max-width: 640px;
       }
-      .row {
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      @media (min-width: 520px) {
+        .card {
+          padding: 26px;
+        }
+      }
+
+      header {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.02em;
+      }
+
+      .sub {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      label {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .input {
+        width: 100%;
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: var(--radius-sm);
+        padding: 12px 12px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 120ms ease, box-shadow 120ms ease;
+      }
+
+      .input::placeholder {
+        color: #94a3b8;
+      }
+
+      .input:focus {
+        border-color: rgba(37, 99, 235, 0.6);
+        box-shadow: var(--focus);
+      }
+
+      .controls {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
         gap: 12px;
         margin-top: 12px;
         flex-wrap: wrap;
-        align-items: center;
       }
-      input[type="text"] {
-        flex: 1;
-        min-width: 260px;
-        padding: 10px 12px;
-        font-size: 16px;
-      }
-      button {
-        padding: 10px 14px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      #result {
-        margin-top: 16px;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        min-height: 22px;
-        white-space: pre-wrap;
-      }
-      .hint {
-        color: #555;
-        font-size: 14px;
-        margin-top: 6px;
-      }
+
+      /* Switch accesible (checkbox estilizado) */
       .switch {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         user-select: none;
       }
+
+      .switch input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+
+      .track {
+        width: 44px;
+        height: 26px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        border: 1px solid var(--border);
+        position: relative;
+        transition: background 140ms ease, border-color 140ms ease;
+        flex: 0 0 auto;
+      }
+
+      .thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+        background: #ffffff;
+        position: absolute;
+        top: 50%;
+        left: 3px;
+        transform: translateY(-50%);
+        box-shadow: 0 6px 12px rgba(2, 6, 23, 0.12);
+        transition: left 140ms ease;
+      }
+
+      /* Estado ON */
+      .switch input:checked + .track {
+        background: rgba(37, 99, 235, 0.18);
+        border-color: rgba(37, 99, 235, 0.35);
+      }
+      .switch input:checked + .track .thumb {
+        left: 21px;
+      }
+
+      /* Focus visible en switch */
+      .switch input:focus-visible + .track {
+        box-shadow: var(--focus);
+      }
+
+      .switchText {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      @media (min-width: 520px) {
+        .actions {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 15px;
+        cursor: pointer;
+        min-height: 44px;
+        transition: transform 80ms ease, box-shadow 120ms ease,
+          background 120ms ease, border-color 120ms ease;
+        outline: none;
+      }
+
+      .btn:focus-visible {
+        box-shadow: var(--focus);
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--primary-contrast);
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+      }
+
+      .btn-primary:hover {
+        background: #2f6cf0;
+      }
+
+      .btn-primary:active {
+        background: var(--primary-pressed);
+      }
+
+      .btn-secondary {
+        background: var(--secondary);
+        color: var(--text);
+        border-color: var(--border);
+      }
+
+      .btn-secondary:hover {
+        background: #0f172a12;
+      }
+
+      .btn-secondary:active {
+        background: var(--secondary-pressed);
+      }
+
+      .hint {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .status {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .status.warn {
+        color: var(--danger);
+      }
+
+      .output {
+        margin-top: 18px;
+        border-top: 1px dashed var(--border);
+        padding-top: 16px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .output-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .output-title {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .btn-mini {
+        min-height: 36px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+
+      .resultBox {
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, #ffffff, #f8fafc);
+        border-radius: var(--radius-sm);
+        padding: 14px 12px;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 15px;
+        line-height: 1.35;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .resultBox.bump {
+        animation: bump 180ms ease-out;
+      }
+
+      @keyframes bump {
+        from {
+          transform: translateY(2px);
+          opacity: 0.85;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .empty {
+        color: #64748b;
+      }
+
+      .toast {
+        margin-top: 8px;
+        font-size: 13px;
+        color: var(--success);
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      footer {
+        margin-top: 14px;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 12px;
+      }
+      .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .btn-primary:disabled {
+        background: #94a3b8; /* gris suave */
+        color: #ffffff;
+      }
+
     </style>
   </head>
 
   <body>
-    <main>
-      <h1>Reverse String</h1>
-      <p>
-        Introduce un texto y elige si quieres invertir en <strong>tiempo real</strong> o
-        usando el botón.
-      </p>
+    <div class="wrap">
+      <div class="card" role="region" aria-label="Invertir cadena">
+        <header>
+          <h1>Invertir cadena</h1>
+          <p class="sub">Escribe un texto y pulsa Invertir (o Enter).</p>
+        </header>
 
-      <div class="row">
-        <input
-          id="textInput"
-          type="text"
-          placeholder="Ej: AI4Devs"
-          autocomplete="off"
-        />
+        <div class="field">
+          <label for="textInput">Texto a invertir</label>
+          <input
+            id="textInput"
+            class="input"
+            type="text"
+            placeholder="Ej: AI4Devs"
+            autocomplete="off"
+          />
+        </div>
 
-        <!-- Switch / selector para modo tiempo real -->
-        <label class="switch" for="realtimeToggle">
-          <input id="realtimeToggle" type="checkbox" />
-          Tiempo real
-        </label>
+        <!-- Controles extra -->
+        <div class="controls">
+          <label class="switch">
+            <input id="realtimeToggle" type="checkbox" />
+            <span class="track" aria-hidden="true">
+              <span class="thumb"></span>
+            </span>
+            <span class="switchText">Tiempo real</span>
+          </label>
 
-        <!-- Botón: aparece solo si hay >= 4 caracteres y el modo tiempo real está OFF -->
-        <button id="reverseBtn" type="button">Invertir</button>
+          <span class="hint" id="minHint"
+            >El botón aparece con <strong>más de 3 caracteres</strong>.</span
+          >
+        </div>
+
+        <div class="actions">
+          <button id="reverseBtn" class="btn btn-primary" type="button">
+            Invertir
+          </button>
+          <button id="clearBtn" class="btn btn-secondary" type="button">
+            Limpiar
+          </button>
+        </div>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <section class="output" aria-label="Resultado">
+          <div class="output-header">
+            <p class="output-title">Resultado</p>
+            <button
+              id="copyBtn"
+              class="btn btn-secondary btn-mini"
+              type="button"
+              aria-label="Copiar resultado"
+            >
+              Copiar
+            </button>
+          </div>
+
+          <div id="result" class="resultBox" aria-live="polite">
+            <span class="empty">Introduce un texto para ver el resultado</span>
+          </div>
+
+          <div id="toast" class="toast" aria-live="polite">Copiado ✅</div>
+        </section>
       </div>
 
-      <div class="hint">
-        - El botón aparece solo con <strong>más de 3 caracteres</strong>.<br />
-        - En modo botón, también puedes pulsar <strong>Enter</strong>.
-      </div>
-
-      <h2>Resultado</h2>
-      <div id="result" aria-live="polite"></div>
-    </main>
+      <footer>HTML + CSS + JavaScript vanilla • Funciona offline</footer>
+    </div>
 
     <script src="./script.js"></script>
   </body>
