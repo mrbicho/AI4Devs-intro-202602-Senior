@@ -5,7 +5,7 @@ ChatGPT
 
 ## Prompts usados (en orden)
 
-### Prompt 1 (FINAL)
+### Prompt 1
 # Ejercicio AI4Devs — Reverse String (HTML + JS)
 
 Necesito resolver un ejercicio sencillo usando **un chatbot** (ChatGPT / Gemini / Claude) y apoyándome en los **seed files** que ya existen dentro de la carpeta `template` (al menos `index.html` y `script.js`).
@@ -63,6 +63,20 @@ Ejemplo:
    - El nombre de la carpeta (`reversestring-XXX`)
    - El chatbot usado
    - El **prompt final** (este prompt) para pegarlo tal cual en la PR
+
+
+### Prompt 2 (FINAL)
+Vamos a implementar funciones extra que han pedido en el ejercicio:
+
+------
+Si lograste alcanzar a cumplir el objetivo del reto sin problemas y quieres subir un poco más el nivel, implementa las siguientes funciones: 
+
+El botón debe aparecer cuando haya texto suficiente, más de 3 letras
+
+Que te de la cadena en tiempo real, que no dependa del botón.
+------
+
+para la opción en tiempo real, que haya algún selector o switch, para que se pueda elegir o convertir en tiempo real, o usar el botón (teniendo en cuenta el tamaño mínimo de 3 carácteres para activar el botón).
 
 ## ChatGPT - Link
 

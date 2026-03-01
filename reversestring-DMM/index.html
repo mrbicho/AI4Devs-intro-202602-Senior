@@ -18,6 +18,7 @@
         gap: 12px;
         margin-top: 12px;
         flex-wrap: wrap;
+        align-items: center;
       }
       input[type="text"] {
         flex: 1;
@@ -43,13 +44,22 @@
         font-size: 14px;
         margin-top: 6px;
       }
+      .switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        user-select: none;
+      }
     </style>
   </head>
 
   <body>
     <main>
       <h1>Reverse String</h1>
-      <p>Introduce un texto y pulsa <strong>Invertir</strong> para ver el resultado.</p>
+      <p>
+        Introduce un texto y elige si quieres invertir en <strong>tiempo real</strong> o
+        usando el botón.
+      </p>
 
       <div class="row">
         <input
@@ -58,10 +68,21 @@
           placeholder="Ej: AI4Devs"
           autocomplete="off"
         />
+
+        <!-- Switch / selector para modo tiempo real -->
+        <label class="switch" for="realtimeToggle">
+          <input id="realtimeToggle" type="checkbox" />
+          Tiempo real
+        </label>
+
+        <!-- Botón: aparece solo si hay >= 4 caracteres y el modo tiempo real está OFF -->
         <button id="reverseBtn" type="button">Invertir</button>
       </div>
 
-      <div class="hint">Extra: también puedes pulsar <strong>Enter</strong>.</div>
+      <div class="hint">
+        - El botón aparece solo con <strong>más de 3 caracteres</strong>.<br />
+        - En modo botón, también puedes pulsar <strong>Enter</strong>.
+      </div>
 
       <h2>Resultado</h2>
       <div id="result" aria-live="polite"></div>
